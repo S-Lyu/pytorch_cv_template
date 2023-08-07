@@ -3,7 +3,7 @@ from utils.train_utils import AverageMeter
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from config import Config
-from model.net import Net
+from models.net import Net
 from glob import glob
 import numpy as np 
 import tensorboard

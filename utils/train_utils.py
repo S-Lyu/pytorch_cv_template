@@ -21,10 +21,5 @@ class AverageMeter:
         self.avg = self.sum / self.count
 
 
-def fix_seed(seed: int) -> None:
-    torch.manual_seed(seed)
-    np.random.seed(seed)
-    random.seed(seed)
-    return
 
 

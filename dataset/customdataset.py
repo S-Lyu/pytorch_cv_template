@@ -3,9 +3,13 @@ try:
 except ImportError:
     from torchvision import transforms
 from torch.utils.data.dataset import Dataset
+from glob import glob
 from PIL import Image
 import torch
+import json
 
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class CustomDataset(Dataset):
     
@@ -13,6 +17,7 @@ class CustomDataset(Dataset):
         super().__init__()
         self.dataset_path = dataset_path
         self.anno_path = anno_path
+        self.imgs = sorted(glob(dataset_path + '/.jpg')) # Change it!
         self.transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.Resize(resize),
@@ -21,6 +26,8 @@ class CustomDataset(Dataset):
                 std=[0.229, 0.224, 0.225]
             ),
         ])
+        with open(anno_path, 'r') as f:
+            self.anno = json.load(f)
 
     def __getitem__(self, index):
         # This requires torchvision.__version__ >= 0.15
@@ -30,7 +37,10 @@ class CustomDataset(Dataset):
         # transform(imgs, bboxes, masks, labels)  # Instance Segmentation
         # transform(imgs, masks)  # Semantic Segmentation
         # transform({"image": imgs, "box": bboxes, "tag": labels})  # Arbitrary Structure
-        return
+        img = Image.open(self.imgs[index]).convert('RGB')
+        bbox = self.anno['bbox'][index] # Change it!
+        img, bbox = self.transform(img, bbox)
+        return img.to(device), bbox.to(device)
         
     def __len__(self):
-        return 
+        return len(self.imgs)

@@ -1,3 +1,5 @@
+import numpy as np
+import random
 import torch
 
 
@@ -14,6 +16,7 @@ class Config:
         self.pretrained_weights = 'models/weights/[WEIGHTS_PATH]'
         self.resize = [512, 512]
 
+        self.seed = 42
         self.lr = 1e-4
         self.weight_decay = 1e-2
         self.epochs = 30        
@@ -22,5 +25,12 @@ class Config:
         self.pin_memory = True
         self.weights_path = ''
         self.use_multigpus = False
+        
+    def fix_seed(self) -> None:
+        torch.manual_seed(self.seed)
+        np.random.seed(self.seed)
+        random.seed(self.seed)
+        return
+
         
     
