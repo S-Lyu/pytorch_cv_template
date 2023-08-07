@@ -31,7 +31,7 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = Net()
     checkpoint = torch.load(config.weights_path)
-    model.load_state_dict(checkpoint['model_state_dict'])
+    model.load_state_dict(checkpoint['state_dict'])
     print(f"Loaded pretrained model, {config.weights_path}")
     model.to(device)
     testset = CustomDataset(dataset_path=config.testset_path,
