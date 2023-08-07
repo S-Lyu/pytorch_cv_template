@@ -15,7 +15,7 @@ class Config:
         self.resize = [512, 512]
 
         self.lr = 1e-4
-        self.weight_decay = 1e
+        self.weight_decay = 1e-2
         self.epochs = 30        
         self.batch_size = 16
         self.num_workers = 6
