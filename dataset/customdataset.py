@@ -1,4 +1,7 @@
-from torchvision.transforms import v2 as transforms
+try:
+    from torchvision.transforms import v2 as transforms
+except ImportError:
+    from torchvision import transforms
 from torch.utils.data.dataset import Dataset
 from PIL import Image
 import torch

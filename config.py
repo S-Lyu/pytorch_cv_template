@@ -7,10 +7,11 @@ class Config:
         self.trainset_path = 'dataset/train'
         self.validset_path = 'dataset/valid'
         self.testset_path = 'dataset/test'
-        
-        self.batch_size = 16
+
         self.lr = 1e-4
-        self.epochs = 30
+        self.epochs = 30        
+        self.batch_size = 16
+        self.num_workers = 6
         self.weights_path = ''
         self.use_multigpus = False
         

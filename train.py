@@ -1,14 +1,19 @@
-from utils.data_utils import CustomDataset
+from dataset.customdataset import CustomDataset
+from utils.train_utils import AverageMeter
 from tqdm.auto import tqdm
 from config import Config
-from model import model
+from model.net import Net
 from glob import glob
 import tensorboard
+import argparse
 import torch
 
 
+config = Config()
+
 def train():
     pass
+
 
 
 
