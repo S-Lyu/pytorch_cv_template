@@ -12,7 +12,7 @@ import torch
 
 config = Config()
 
-def evaluate(test_loader):
+def evaluate(model, test_loader):
     test_losses = AverageMeter()
     criterion = torch.nn.CrossEntropyLoss()
     
