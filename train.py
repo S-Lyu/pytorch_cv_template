@@ -1,4 +1,5 @@
 from utils.train_utils import AverageMeter, save_checkpoint, load_checkpoint
+from torch.utils.tensorboard import SummaryWriter
 from dataset.customdataset import CustomDataset
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm, trange
@@ -30,6 +31,7 @@ def get_loaders():
     return train_loader, valid_loader
 
 def train(model, train_loader, valid_loader, resume=None):
+    writer = SummaryWriter()
     train_losses = AverageMeter()
     valid_losses = AverageMeter()
     criterion = torch.nn.CrossEntropyLoss()
@@ -53,6 +55,7 @@ def train(model, train_loader, valid_loader, resume=None):
             output = model(img)
             loss = criterion(output, label)
             train_losses.update(loss.item())
+            writer.add_scalar("Train Loss", loss, epoch)
             
             optimizer.zero_grad()
             loss.backward()
@@ -68,6 +71,7 @@ def train(model, train_loader, valid_loader, resume=None):
                 output = model(img)
                 loss = criterion(output, label)
                 valid_losses.update(loss.item())
+                writer.add_scalar("Valid Loss", loss, epoch)
                 pbar.set_postfix_str(f"Loss: {valid_losses.avg:.4f}")
                 
         if valid_losses.avg < best_val_loss:
@@ -78,6 +82,7 @@ def train(model, train_loader, valid_loader, resume=None):
             print(f"Saved best model @ {epoch+1} with Loss: {valid_losses.avg:.4f}")
             
     print(f"Finished training, best @ {best_epoch+1} with Loss: {best_val_loss:.4f}")
+    writer.close()
     return        
 
 
