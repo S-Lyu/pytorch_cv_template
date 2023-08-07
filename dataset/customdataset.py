@@ -9,8 +9,10 @@ import torch
 
 class CustomDataset(Dataset):
     
-    def __init__(self, resize=[]):
+    def __init__(self, dataset_path, anno_path, resize=[]):
         super().__init__()
+        self.dataset_path = dataset_path
+        self.anno_path = anno_path
         self.transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.Resize(resize),
@@ -21,12 +23,13 @@ class CustomDataset(Dataset):
         ])
 
     def __getitem__(self, index):
-    # transform(imgs)  # Image Classification
-    # transform(videos)  # Video Tasks
-    # transform(imgs, bboxes, labels)  # Object Detection
-    # transform(imgs, bboxes, masks, labels)  # Instance Segmentation
-    # transform(imgs, masks)  # Semantic Segmentation
-    # transform({"image": imgs, "box": bboxes, "tag": labels})  # Arbitrary Structure
+        # This requires torchvision.__version__ >= 0.15
+        # transform(imgs)  # Image Classification
+        # transform(videos)  # Video Tasks
+        # transform(imgs, bboxes, labels)  # Object Detection
+        # transform(imgs, bboxes, masks, labels)  # Instance Segmentation
+        # transform(imgs, masks)  # Semantic Segmentation
+        # transform({"image": imgs, "box": bboxes, "tag": labels})  # Arbitrary Structure
         return
         
     def __len__(self):
