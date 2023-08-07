@@ -4,7 +4,6 @@ from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from config import Config
 from models.net import Net
-from glob import glob
 import numpy as np 
 import tensorboard
 import torch
@@ -31,6 +30,9 @@ def evaluate(model, test_loader):
 if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = Net()
+    checkpoint = torch.load(config.weights_path)
+    model.load_state_dict(checkpoint['model_state_dict'])
+    print(f"Loaded pretrained model, {config.weights_path}")
     model.to(device)
     testset = CustomDataset(dataset_path=config.testset_path,
                             anno_path=config.test_anno_path,
@@ -41,10 +43,3 @@ if __name__ == '__main__':
                              pin_memory=config.pin_memory)
     evaluate(model, test_loader)
     
-
-
-
-
-
-
-

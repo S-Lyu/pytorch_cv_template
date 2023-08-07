@@ -4,7 +4,6 @@ import torch
 
 
 class Config:
-    
     def __init__(self):
         self.trainset_path = 'dataset/train'
         self.validset_path = 'dataset/valid'

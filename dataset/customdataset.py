@@ -1,7 +1,7 @@
 try:
     from torchvision.transforms import v2 as transforms
 except ImportError:
-    from torchvision import transforms
+    raise ImportError("torchvision.__version__ >= 0.15 is required")
 from torch.utils.data.dataset import Dataset
 from glob import glob
 from PIL import Image
@@ -12,7 +12,6 @@ import json
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class CustomDataset(Dataset):
-    
     def __init__(self, dataset_path, anno_path, resize=[]):
         super().__init__()
         self.dataset_path = dataset_path
@@ -26,8 +25,6 @@ class CustomDataset(Dataset):
                 std=[0.229, 0.224, 0.225]
             ),
         ])
-        with open(anno_path, 'r') as f:
-            self.anno = json.load(f)
 
     def __getitem__(self, index):
         # This requires torchvision.__version__ >= 0.15
