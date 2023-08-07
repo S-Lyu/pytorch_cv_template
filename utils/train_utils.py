@@ -30,7 +30,7 @@ def save_checkpoint(model, optimizer, epoch, best_val_loss, checkpoint_path):
 def load_checkpoint(model, optimizer, checkpoint_path):
     checkpoint = torch.load(checkpoint_path)
     model.load_state_dict(checkpoint['state_dict'])
-    optimizer.load_state_dict(checkpoint['state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer'])
     start_epoch = checkpoint['epoch']
     best_val_loss = checkpoint['best_val_loss']
     return model, optimizer, start_epoch, best_val_loss
