@@ -5,7 +5,6 @@ from torch.utils.data import DataLoader
 from tqdm.auto import tqdm, trange
 from config import Config
 from models.net import Net
-import tensorboard
 import argparse
 import torch
 
@@ -95,10 +94,7 @@ if __name__ == '__main__':
     model = Net()
     model.to(device)
     train_loader, valid_loader = get_loaders()
-    if args.resume:
-        train(model, train_loader, valid_loader, resume=args.resume)
-    else:
-        train(model, train_loader, valid_loader)
+    train(model, train_loader, valid_loader, args.resume)
 
 
 
