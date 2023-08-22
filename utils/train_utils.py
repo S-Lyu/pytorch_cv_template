@@ -2,7 +2,7 @@ import torch
 
 class AverageMeter:
     def __init__(self):
-        self.reset ()
+        self.reset()
 
     def reset(self):
         self.val = 0
