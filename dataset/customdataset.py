@@ -12,11 +12,12 @@ import json
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class CustomDataset(Dataset):
-    def __init__(self, dataset_path, anno_path, resize=[]):
+    def __init__(self, dataset_path, anno_path, resize=[512, 512]):
         super().__init__()
         self.dataset_path = dataset_path
-        self.anno_path = anno_path
         self.imgs = sorted(glob(dataset_path + '/.jpg')) # Change it!
+        with open(anno_path, 'r') as f:
+            self.anno = json.load(f)
         self.transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.Resize(resize),
@@ -25,6 +26,7 @@ class CustomDataset(Dataset):
                 std=[0.229, 0.224, 0.225]
             ),
         ])
+
 
     def __getitem__(self, index):
         # This requires torchvision.__version__ >= 0.15
