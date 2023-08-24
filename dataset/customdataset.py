@@ -2,7 +2,7 @@ try:
     from torchvision.transforms import v2 as transforms
 except ImportError:
     raise ImportError("torchvision.__version__ >= 0.15 is required")
-from torch.utils.data.dataset import Dataset
+from torch.utils.data import Dataset
 from glob import glob
 from PIL import Image
 import torch
