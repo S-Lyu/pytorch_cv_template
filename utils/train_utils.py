@@ -4,7 +4,7 @@ from torch.optim.lr_scheduler import _LRScheduler
 
 class AverageMeter:
     def __init__(self):
-        self.reset ()
+        self.reset()
 
     def reset(self):
         self.val = 0

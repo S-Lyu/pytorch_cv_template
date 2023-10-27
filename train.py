@@ -49,6 +49,7 @@ def train(model, train_loader, valid_loader, resume=None):
     for epoch in trange(start_epoch, config.epochs):
         # training
         model.train()
+        train_losses.reset()
         pbar = tqdm(train_loader, leave=False, 
                     desc=f"Train {epoch+1}/{config.epochs}")
         for img, label in pbar:
@@ -65,6 +66,7 @@ def train(model, train_loader, valid_loader, resume=None):
             
         # Validation
         model.eval()
+        valid_losses.reset()
         pbar = tqdm(valid_loader, leave=False, 
                     desc=f"Valid {epoch+1}/{config.epochs}")
         with torch.no_grad():
