@@ -1,4 +1,4 @@
-from utils.train_utils import AverageMeter, save_checkpoint, load_checkpoint
+from utils.train_utils import AverageMeter, CosineAnnealingWarmUpRestarts, save_checkpoint, load_checkpoint
 from torch.utils.tensorboard import SummaryWriter
 from dataset.customdataset import CustomDataset
 from torch.utils.data import DataLoader
@@ -36,10 +36,11 @@ def train(model, train_loader, valid_loader, resume=None):
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=config.lr,
                                   weight_decay=config.weight_decay)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10)
     
     if resume is not None:
-        model, optimizer, start_epoch, best_val_loss = load_checkpoint(
-            model, optimizer, resume
+        model, optimizer, scheduler, start_epoch, best_val_loss = load_checkpoint(
+            model, optimizer, scheduler, resume
         )
     else:
         best_val_loss = 1
@@ -59,6 +60,7 @@ def train(model, train_loader, valid_loader, resume=None):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            scheduler.step()
             pbar.set_postfix_str(f"Loss: {train_losses.avg:.4f}")
             
         # Validation
@@ -77,7 +79,7 @@ def train(model, train_loader, valid_loader, resume=None):
             best_val_loss = valid_losses.avg
             best_epoch = epoch
             checkpoint_path = f'{config.weights_save_path}/model_best.pth'
-            save_checkpoint(model, epoch, optimizer, best_val_loss, checkpoint_path)
+            save_checkpoint(model, optimizer, scheduler, epoch, best_val_loss, checkpoint_path)
             print(f"Saved best model @ {epoch+1} with Loss: {valid_losses.avg:.4f}")
             
     print(f"Finished training, best @ {best_epoch+1} with Loss: {best_val_loss:.4f}")
